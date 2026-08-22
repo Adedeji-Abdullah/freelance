@@ -1,6 +1,5 @@
-"use client"
 import React from "react";
-
+import { Link } from "react-router-dom";
 
 export default function Home() {
   return (
@@ -12,8 +11,8 @@ export default function Home() {
             <p style={{ marginTop: 16, color: '#6b7280', fontSize: 18 }}>Hire vetted professionals for design, development, writing, and more — securely and efficiently.</p>
 
             <div style={{ marginTop: 24, display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-              <a href="/register" style={{ background: '#0b0b0b', color: '#fff', padding: '12px 20px', borderRadius: 8, fontWeight: 600, textDecoration: 'none' }}>Get started</a>
-              <a href="/login" style={{ background: 'transparent', color: '#0b0b0b', padding: '12px 20px', borderRadius: 8, fontWeight: 600, border: '1px solid #e5e7eb', textDecoration: 'none' }}>Sign in</a>
+              <Link to="/register" style={{ background: '#0b0b0b', color: '#fff', padding: '12px 20px', borderRadius: 8, fontWeight: 600, textDecoration: 'none' }}>Get started</Link>
+              <Link to="/login" style={{ background: 'transparent', color: '#0b0b0b', padding: '12px 20px', borderRadius: 8, fontWeight: 600, border: '1px solid #e5e7eb', textDecoration: 'none' }}>Sign in</Link>
             </div>
           </div>
 
@@ -86,7 +85,7 @@ export default function Home() {
             <p style={{ margin: '8px 0 0 0', color: '#d1d5db' }}>Create your account and post your first job in minutes.</p>
           </div>
           <div style={{ marginTop: 12 }}>
-            <a href="/register" style={{ background: '#fff', color: '#0b0b0b', padding: '10px 18px', borderRadius: 8, textDecoration: 'none', fontWeight: 700 }}>Create account</a>
+            <Link to="/register" style={{ background: '#fff', color: '#0b0b0b', padding: '10px 18px', borderRadius: 8, textDecoration: 'none', fontWeight: 700 }}>Create account</Link>
           </div>
         </div>
       </footer>
