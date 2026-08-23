@@ -38,20 +38,29 @@ app.post("/register", async (req, res) => {
 app.post("/bidding", async (req, res) => {
   const data = req.body;
   console.log(req.body);
-  res.json(req.body);
-  console.log(req.body.info)
-  console.log(data.info)
+  // res.json(req.body);
+  console.log(req.body.id)
+  console.log(data.id)
   try {
     const result = await bids.updateOne(
     {
-      _id: new mongoose.Types.ObjectId(data.info)
+      _id: new mongoose.Types.ObjectId(data.id)
     },
     { $push: { option: {data} } },
+
+    console.log("Success")
   );
   } catch (err) {
     res.json({"message": "Something went wrong"})
+    console.log(err)
   }
 });
+
+app.get('/applicants', async (req, res) => {
+  const data = await bids.find()
+  console.log(data)
+  res.json(data)
+})
 
 app.post("/login", async (req, res) => {
   try {

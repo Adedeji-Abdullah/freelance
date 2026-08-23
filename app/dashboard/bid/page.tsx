@@ -1,28 +1,34 @@
-"use client"
+"use client";
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
 
 const page = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [describtion, setDescribtion] = useState("");
+  const router = useRouter()
 
   const submit = async (e: React.FocusEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    const info = await localStorage.getItem("data")
-    await console.log(info)
-    const data = fetch("http://localhost:5000/bidding", {
+    e.preventDefault();
+    const id = localStorage.getItem("bid-data");
+    console.log(id);
+    const data = await fetch("http://localhost:5000/bidding", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         name,
         email,
         describtion,
-        info
+        id,
       }),
     });
-    const result = data.json()
-    console.log(result)
+
+    const result = await data.json();
+    router.push("/dashboard")
+    console.log(result);
+    
   };
+
   return (
     <section className="bg-white min-h-screen">
       <div>

@@ -10,10 +10,10 @@ const Dashboard = () => {
   const [data, setData] = useState<String>("");
 
   type bid = {
-    _id: String;
+    _id: string;
     name: String;
     job: String;
-    money: Number;
+    money: number;
     describtion: String;
   };
 
@@ -30,7 +30,7 @@ const Dashboard = () => {
         console.log(result);
         setBids(result);
         console.log(result.number);
-        setNum(bids);
+        setNum(bids.length);
       } catch (error: any) {
         console.log("Something went wrong");
         setError(error);
@@ -39,8 +39,19 @@ const Dashboard = () => {
     respo();
   }, []);
 
+  const applicant = async () => {
+    const data = await fetch('http://localhost:5000/applicants')
+    const result = await data.json()
+    console.log(result)
+
+    console.log(result.filter((datarel) => (datarel._id === localStorage.getItem("bid-data"))))
+  }
+
   return (
-    <div className="overflow-visible" style={{ padding: 24, background: "#ffffff", minHeight: "100vh" }}>
+    <div
+      className="overflow-visible"
+      style={{ padding: 24, background: "#ffffff", minHeight: "100vh" }}
+    >
       <div
         style={{
           maxWidth: 1200,
@@ -172,18 +183,24 @@ const Dashboard = () => {
 
                     <h3 className="text-slate-600">Describtion</h3>
                     <h4 className="text-slate-400">{item.describtion}</h4>
+                    <div className="flex justify-between">
 
                     <button
-                      
-                      onDoubleClick={() => (router.push("/dashboard/bid"), setData(item._id), console.log(data), localStorage.setItem('data', data))}
-                      onClick={() => alert("double click!!!")}
+                      onClick={() => {
+                        setData(item._id)
+                        console.log(item._id)
+                        localStorage.setItem("bid-data", item._id)
+                        router.push("/dashboard/bid")
+                      }}
+                      // onClick={() => alert("double click!!!")}
                       className="bg-black text-white py-1 px-3 rounded-md mt-5 flex justify-items-end cursor-pointer"
                     >
                       Bid
                     </button>
+                    <button onClick={applicant} className="bg-black text-white py-1 px-3 rounded-md mt-5 flex justify-items-end cursor-pointer">Applicants</button>
+                    </div>
                   </li>
                 ))}
-                =
               </ul>
             </div>
 
@@ -219,7 +236,6 @@ const Dashboard = () => {
                 >
                   View proposals
                 </button>
-
               </div>
             </div>
           </section>
