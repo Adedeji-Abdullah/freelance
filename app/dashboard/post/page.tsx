@@ -11,6 +11,7 @@ const page = () => {
   const [days, setDays] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [secrete, setSecrete] = useState(0)
 
   // const router = useRouter()
 
@@ -28,6 +29,7 @@ const page = () => {
           money: money,
           describtion: describtion,
           days: days,
+          secrete: secrete
         }),
       });
       console.log("Log 2");
@@ -114,6 +116,17 @@ const page = () => {
               onChange={(e) => setDays(e.target.value)}
               className="h-10 pl-3 block w-2/3 border border-slate-300 hover:text-slate-400 rounded-md"
               type="date"
+            />
+          </div>
+          <div className="mt-10">
+            <label className="text-2xl text-slate-200 block w-1/3" htmlFor="">
+              Enter you secrete code
+            </label>
+            <input
+              onChange={(e) => setSecrete(e.target.value)}
+              className="h-10 pl-3 block w-2/3 border border-slate-300 hover:text-slate-400 rounded-md"
+              placeholder="e.g JRtbD57dr"
+              type="password"
             />
           </div>
           <button

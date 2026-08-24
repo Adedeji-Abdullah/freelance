@@ -57,9 +57,23 @@ app.post("/bidding", async (req, res) => {
 });
 
 app.get('/applicants', async (req, res) => {
+  const value = req.params
+  console.log(value)
   const data = await bids.find()
   console.log(data)
   res.json(data)
+})
+
+app.post('/confirm', async (req, res) => {
+  const data = req.body
+  console.log(data)
+  const find = await bids.findById(req.body.id)
+  console.log(find)
+  if(req.body.confirmData === find.secrete){
+    res.json({message: "Successful"})
+  }else{
+    res.json({message: "It's a wrong secrete code"})
+  }
 })
 
 app.post("/login", async (req, res) => {

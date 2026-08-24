@@ -6,6 +6,7 @@ const bidSchema = new mongoose.Schema({
     money: Number,
     describtion: String,
     date: String,
+    secrete: String,
     option: []
 })
 

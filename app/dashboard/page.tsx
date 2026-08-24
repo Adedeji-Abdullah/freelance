@@ -8,6 +8,9 @@ const Dashboard = () => {
   const [error, setError] = useState("");
   const [num, setNum] = useState(0);
   const [data, setData] = useState<String>("");
+  const [applicants, setApplicants] = useState<any[]>([]);
+  const [accept, setAccept] = useState("")
+  const [confirmData, setConfirmData] = useState("")
 
   type bid = {
     _id: string;
@@ -40,11 +43,35 @@ const Dashboard = () => {
   }, []);
 
   const applicant = async () => {
-    const data = await fetch('http://localhost:5000/applicants')
-    const result = await data.json()
-    console.log(result)
+    const data = await fetch("http://localhost:5000/applicants");
+    const result = await data.json();
+    console.log(1);
+    console.log(result);
+    console.log(2);
+    const filtered = result.filter(
+      (item: any) => item._id === localStorage.getItem("applicant-id"),
+    );
+    const options = filtered[0].option;
+    console.log(filtered);
+    console.log(filtered[0].name);
+    console.log(options);
+    console.log(options.data);
+    setApplicants(options);
+  };
 
-    console.log(result.filter((datarel) => (datarel._id === localStorage.getItem("bid-data"))))
+  const handleAccept = () => {
+    console.log(accept)
+  }
+
+  const handleConfirmation = async () => {
+    const data = await fetch('http://localhost:5000/confirm', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        id: accept,
+        confirmData: confirmData
+      })
+    })
   }
 
   return (
@@ -69,6 +96,7 @@ const Dashboard = () => {
             background: "#fbfcfd",
             height: "fit-content",
           }}
+          className="z-99"
         >
           <h3 style={{ marginTop: 0 }}>Your Menu</h3>
           <nav style={{ display: "flex", flexDirection: "column", gap: 8 }}>
@@ -111,6 +139,7 @@ const Dashboard = () => {
               gap: 16,
               marginBottom: 24,
             }}
+            className=""
           >
             <div
               style={{
@@ -119,6 +148,7 @@ const Dashboard = () => {
                 background: "#fff",
                 boxShadow: "0 6px 18px rgba(15,23,42,0.04)",
               }}
+
             >
               <div style={{ color: "#6b7280" }}>Earnings</div>
               <div style={{ fontSize: 20, fontWeight: 700 }}>$4,320</div>
@@ -169,13 +199,14 @@ const Dashboard = () => {
                 background: "#fff",
                 boxShadow: "0 6px 18px rgba(15,23,42,0.04)",
               }}
+              className="z-20"
             >
               <h3 style={{ marginTop: 0 }}>Recent activity</h3>
               <ul className="">
                 {bids.map((item) => (
                   <li
                     key={item._id}
-                    className="m-10 border px-5 rounded-2xl py-5"
+                    className="m-10 border px-5 rounded-2xl py-5 overflow-y-auto"
                   >
                     <h1 className="text-slate-900 text-3xl">{item.name}</h1>
                     <h5 className="ml-96 inline text-black">${item.money}</h5>
@@ -184,20 +215,27 @@ const Dashboard = () => {
                     <h3 className="text-slate-600">Describtion</h3>
                     <h4 className="text-slate-400">{item.describtion}</h4>
                     <div className="flex justify-between">
-
-                    <button
-                      onClick={() => {
-                        setData(item._id)
-                        console.log(item._id)
-                        localStorage.setItem("bid-data", item._id)
-                        router.push("/dashboard/bid")
-                      }}
-                      // onClick={() => alert("double click!!!")}
-                      className="bg-black text-white py-1 px-3 rounded-md mt-5 flex justify-items-end cursor-pointer"
-                    >
-                      Bid
-                    </button>
-                    <button onClick={applicant} className="bg-black text-white py-1 px-3 rounded-md mt-5 flex justify-items-end cursor-pointer">Applicants</button>
+                      <button
+                        onClick={() => {
+                          setData(item._id);
+                          console.log(item._id);
+                          localStorage.setItem("bid-data", item._id);
+                          router.push("/dashboard/bid");
+                        }}
+                        // onClick={() => alert("double click!!!")}
+                        className="bg-black text-white py-1 px-3 rounded-md mt-5 flex justify-items-end cursor-pointer"
+                      >
+                        Bid
+                      </button>
+                      <button
+                        onClick={() => {
+                          localStorage.setItem("applicant-id", item._id);
+                          applicant();
+                        }}
+                        className="bg-black text-white py-1 px-3 rounded-md mt-5 flex justify-items-end cursor-pointer"
+                      >
+                        Applicants
+                      </button>
                     </div>
                   </li>
                 ))}
@@ -236,6 +274,49 @@ const Dashboard = () => {
                 >
                   View proposals
                 </button>
+                {/* {applicants.length > 0 && (
+                  <div>
+                    <h4>Applicants:</h4>
+                    <ul>
+                      {applicants.map((applicant, index) => (
+                        <li key={index}
+                          style={{
+                            padding: "4px 8px",
+                          }}>
+                            applicant
+                          </li>
+                      ) */}
+
+                {applicants.length > 0 ? (
+                  <ul className="mt-10">
+                    {applicants.map((applicant, index) => (
+                      <li
+                        key={index}
+                        className="text-black tex-2xl ml-2 font-bold mt-5"
+                        style={{
+                    padding: "8px 12px",
+                    borderRadius: 8,
+                    background: "transparent",
+                    border: "1px solid #e5e7eb",
+                  }}
+                      >
+                        <div className="flex justify-between">
+                          {applicant.data.name}{" "}
+                          <button onClick={() => {setAccept(applicant.data.id), handleAccept(), console.log(applicant.data.id), console.log(applicant.data)}} className="bg-black px-3 py-1 text-white rounded-md cursor-pointer">Accept</button>
+                        </div>
+                        <p className="text-slate-400 font-semibold">{applicant.data.describtion}</p>
+                        {/* {setAccept(applicant.data.id)} */}
+                        {accept === applicant.data.id ? (<div className="flex justify-between">
+                          <input onChange={(e) => setConfirmData(e.target.value)} placeholder="Enter the secrete code" className="border pl-2" /> 
+                          <button onClick={handleConfirmation} className="bg-black text-white px-3 py-1 rounded-md ml-2">confirm</button>
+                        </div>) : ''}
+                        
+                      </li>
+                    ))}
+                  </ul>
+                ) : (
+                  <p className="font-bold text-2xl mt-10">No applicant for this project yet,be the first applicant 🥳🥳🥳</p>
+                )}
               </div>
             </div>
           </section>
