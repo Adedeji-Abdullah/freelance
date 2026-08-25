@@ -11,6 +11,8 @@ const Dashboard = () => {
   const [applicants, setApplicants] = useState<any[]>([]);
   const [accept, setAccept] = useState("")
   const [confirmData, setConfirmData] = useState("")
+  const [applicantData, setApplicantData] = useState<any>({})
+  const [confirm, setConfirm] = useState(false)
 
   type bid = {
     _id: string;
@@ -72,6 +74,15 @@ const Dashboard = () => {
         confirmData: confirmData
       })
     })
+    const result = await data.json();
+    console.log(result)
+    if (result.message === "Successful") {
+      // alert('Confirmation successful');
+      setConfirm(true)
+      alert("This is the email of the applicant  " + applicantData.email)
+    } else {
+      alert('Incorrect secrete code');
+    }
   }
 
   return (
@@ -79,6 +90,7 @@ const Dashboard = () => {
       className="overflow-visible"
       style={{ padding: 24, background: "#ffffff", minHeight: "100vh" }}
     >
+      <input placeholder="Search for Job" type="text" className="h-12 w-1/2 flex items-center p-2 border text-black rounded-2xl self-center mx-auto mb-10" />
       <div
         style={{
           maxWidth: 1200,
@@ -189,7 +201,7 @@ const Dashboard = () => {
           </section>
 
           <section
-            className="text-slate-400"
+            className="text-slate-400 "
             style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: 16 }}
           >
             <div
@@ -199,19 +211,18 @@ const Dashboard = () => {
                 background: "#fff",
                 boxShadow: "0 6px 18px rgba(15,23,42,0.04)",
               }}
-              className="z-20"
+              className= ""
             >
-              <h3 style={{ marginTop: 0 }}>Recent activity</h3>
+              <h3 style={{ marginTop: 0 }}> activity</h3>
               <ul className="">
                 {bids.map((item) => (
                   <li
                     key={item._id}
-                    className="m-10 border px-5 rounded-2xl py-5 overflow-y-auto"
+                    className="m-10 border px-5 rounded-2xl py-5 "
                   >
                     <h1 className="text-slate-900 text-3xl">{item.name}</h1>
                     <h5 className="ml-96 inline text-black">${item.money}</h5>
                     <h3 className="text-slate-600">⚫{item.job}</h3>
-
                     <h3 className="text-slate-600">Describtion</h3>
                     <h4 className="text-slate-400">{item.describtion}</h4>
                     <div className="flex justify-between">
@@ -249,6 +260,7 @@ const Dashboard = () => {
                 background: "#fff",
                 boxShadow: "0 6px 18px rgba(15,23,42,0.04)",
               }}
+              className="static"
             >
               <h3 style={{ marginTop: 0 }}>Quick actions</h3>
               <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
@@ -302,7 +314,7 @@ const Dashboard = () => {
                       >
                         <div className="flex justify-between">
                           {applicant.data.name}{" "}
-                          <button onClick={() => {setAccept(applicant.data.id), handleAccept(), console.log(applicant.data.id), console.log(applicant.data)}} className="bg-black px-3 py-1 text-white rounded-md cursor-pointer">Accept</button>
+                          <button onClick={() => {setAccept(applicant.data.id), handleAccept(), console.log(applicant.data.id), setApplicantData(applicant.data)}} className="bg-black px-3 py-1 text-white rounded-md cursor-pointer">Accept</button>
                         </div>
                         <p className="text-slate-400 font-semibold">{applicant.data.describtion}</p>
                         {/* {setAccept(applicant.data.id)} */}
@@ -317,6 +329,16 @@ const Dashboard = () => {
                 ) : (
                   <p className="font-bold text-2xl mt-10">No applicant for this project yet,be the first applicant 🥳🥳🥳</p>
                 )}
+
+                {applicantData && confirm ? (<div className="text-2xl">
+                  <h1 className="text-2xl"><span className="text-black text-2xl font-bold">Applicant Name:  </span>{applicantData.name}</h1>
+                  <h2><span className="text-black text-2xl font-bold">Applicant Email:  </span>{applicantData.email}</h2>
+                  <h2><span className="text-black text-2xl font-bold">Amount demanded:  </span>${applicantData.amount}</h2>
+                  <h2><span className="text-black text-2xl font-bold">Ready in:  </span>{applicantData.days} day(s)</h2>
+                  <a href={`${applicantData.link}`}><span className="text-black text-2xl font-bold">link to his/her website:  </span><span className="underline">{applicantData.link}</span></a>
+                  <h2><span className="text-black text-2xl font-bold">His/her reason for applying for this job:  </span>{applicantData.reason}</h2>
+
+                </div>) : ""}
               </div>
             </div>
           </section>

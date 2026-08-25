@@ -6,7 +6,7 @@ import React, { useState } from "react";
 const page = () => {
   const [name, setName] = useState("");
   const [job, setJob] = useState("");
-  const [money, setMoney] = useState(0);
+  const [money, setMoney] = useState<number>(0);
   const [describtion, setDescribtion] = useState("");
   const [days, setDays] = useState("");
   const [loading, setLoading] = useState(false);

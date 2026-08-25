@@ -6,6 +6,10 @@ const page = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [describtion, setDescribtion] = useState("");
+  const [reason, setReason] = useState("")
+  const [days, setDays] = useState(0)
+  const [amount, setAmount] = useState(0)
+  const [link, setLink] = useState("")
   const router = useRouter()
 
   const submit = async (e: React.FocusEvent<HTMLFormElement>) => {
@@ -20,6 +24,10 @@ const page = () => {
         email,
         describtion,
         id,
+        reason,
+        days,
+        amount,
+        link,
       }),
     });
 
@@ -71,6 +79,52 @@ const page = () => {
             id=""
           ></textarea>
         </div>
+        <div className="ml-5 mt-10">
+          <label className="text-slate-400 text-2xl" htmlFor="">
+            Tell us about reason you are suitable for this job
+          </label>
+          <textarea
+            onChange={(e) => setReason(e.target.value)}
+            className="border rounded-md w-4/5 md:w-1/3 p-3 block"
+            rows={10}
+            name=""
+            id=""
+          ></textarea>
+        </div>
+        <div className="ml-5 mt-10">
+          <label className="text-slate-400 block text-2xl" htmlFor="">
+            In how many days will you make it
+          </label>
+          <input
+            onChange={(e) => setDays(e.target.value)}
+            className="border rounded-md w-4/5 md:w-1/3 h-10 p-3 block"
+            type="number"
+            placeholder="in days"
+          />
+        </div>
+        <div className="ml-5 mt-10">
+          <label className="text-slate-400 block text-2xl" htmlFor="">
+            How much will you like to receive
+          </label>
+          <input
+            onChange={(e) => setAmount(e.target.value)}
+            className="border rounded-md w-4/5 md:w-1/3 h-10 p-3 block"
+            type="number"
+            placeholder="in $$$"
+          />
+        </div>
+        <div className="ml-5 mt-10">
+          <label className="text-slate-400 block text-2xl" htmlFor="">
+            Link to any of your previous website/Github/Portfolio
+          </label>
+          <input
+            onChange={(e) => setLink(e.target.value)}
+            className="border rounded-md w-4/5 md:w-1/3 h-10 p-3 block"
+            type="url"
+            placeholder="e.g https://example.com"
+          />
+        </div>
+        
         <button
           className="bg-gray-400 hover:bg-gray-300 py-1/2 px-3 mx-auto mt-14 items-center flex rounded-sm cursor-pointer"
           onClick={submit}
