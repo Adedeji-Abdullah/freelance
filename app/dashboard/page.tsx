@@ -9,10 +9,12 @@ const Dashboard = () => {
   const [num, setNum] = useState(0);
   const [data, setData] = useState<String>("");
   const [applicants, setApplicants] = useState<any[]>([]);
-  const [accept, setAccept] = useState("")
-  const [confirmData, setConfirmData] = useState("")
-  const [applicantData, setApplicantData] = useState<any>({})
-  const [confirm, setConfirm] = useState(false)
+  const [accept, setAccept] = useState("");
+  const [confirmData, setConfirmData] = useState("");
+  const [applicantData, setApplicantData] = useState<any>({});
+  const [confirm, setConfirm] = useState(false);
+  const [job, setJob] = useState("");
+  const [searchJob, setSearchJob] = useState<bid[]>([]);
 
   type bid = {
     _id: string;
@@ -33,6 +35,7 @@ const Dashboard = () => {
         const data = await fetch("http://localhost:5000/bids");
         const result = await data.json();
         console.log(result);
+        console.log("this is bids  " + bids);
         setBids(result);
         console.log(result.number);
         setNum(bids.length);
@@ -61,36 +64,54 @@ const Dashboard = () => {
     setApplicants(options);
   };
 
-  const handleAccept = () => {
-    console.log(accept)
-  }
+  const handleAccept = async () => {
+   await console.log("this is accept  " + accept);
+  };
 
   const handleConfirmation = async () => {
-    const data = await fetch('http://localhost:5000/confirm', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
+    const data = await fetch("http://localhost:5000/confirm", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
         id: accept,
-        confirmData: confirmData
-      })
-    })
+        confirmData: confirmData,
+      }),
+    });
     const result = await data.json();
-    console.log(result)
+    console.log(result);
     if (result.message === "Successful") {
       // alert('Confirmation successful');
-      setConfirm(true)
-      alert("This is the email of the applicant  " + applicantData.email)
+      setConfirm(true);
+      alert("This is the email of the applicant  " + applicantData.email);
     } else {
-      alert('Incorrect secrete code');
+      alert("Incorrect secrete code");
     }
-  }
+  };
+
+  useEffect(() => {
+    //  if(bids[]?.name === job){
+    //   console.log("it is")
+    //   console.log(bids.name)
+    //  }else{
+    //   console.log("No value")
+    //  }
+
+    const data = bids.filter((item) => item.job === job);
+    console.log(data);
+    setSearchJob(data);
+  }, [job]);
 
   return (
     <div
       className="overflow-visible"
       style={{ padding: 24, background: "#ffffff", minHeight: "100vh" }}
     >
-      <input placeholder="Search for Job" type="text" className="h-12 w-1/2 flex items-center p-2 border text-black rounded-2xl self-center mx-auto mb-10" />
+      <input
+        onChange={(e) => setJob(e.target.value)}
+        placeholder="Search for Job"
+        type="text"
+        className="h-12 w-1/2 flex items-center p-2 border text-black rounded-2xl self-center mx-auto mb-10"
+      />
       <div
         style={{
           maxWidth: 1200,
@@ -160,7 +181,6 @@ const Dashboard = () => {
                 background: "#fff",
                 boxShadow: "0 6px 18px rgba(15,23,42,0.04)",
               }}
-
             >
               <div style={{ color: "#6b7280" }}>Earnings</div>
               <div style={{ fontSize: 20, fontWeight: 700 }}>$4,320</div>
@@ -211,45 +231,91 @@ const Dashboard = () => {
                 background: "#fff",
                 boxShadow: "0 6px 18px rgba(15,23,42,0.04)",
               }}
-              className= ""
+              className=""
             >
               <h3 style={{ marginTop: 0 }}> activity</h3>
               <ul className="">
-                {bids.map((item) => (
-                  <li
-                    key={item._id}
-                    className="m-10 border px-5 rounded-2xl py-5 "
-                  >
-                    <h1 className="text-slate-900 text-3xl">{item.name}</h1>
-                    <h5 className="ml-96 inline text-black">${item.money}</h5>
-                    <h3 className="text-slate-600">⚫{item.job}</h3>
-                    <h3 className="text-slate-600">Describtion</h3>
-                    <h4 className="text-slate-400">{item.describtion}</h4>
-                    <div className="flex justify-between">
-                      <button
-                        onClick={() => {
-                          setData(item._id);
-                          console.log(item._id);
-                          localStorage.setItem("bid-data", item._id);
-                          router.push("/dashboard/bid");
-                        }}
-                        // onClick={() => alert("double click!!!")}
-                        className="bg-black text-white py-1 px-3 rounded-md mt-5 flex justify-items-end cursor-pointer"
+                {searchJob.length > 0 ? (
+                  <div>
+                    {searchJob.map((item) => (
+                      <li
+                        key={item._id}
+                        className="m-10 border px-5 rounded-2xl py-5 "
                       >
-                        Bid
-                      </button>
-                      <button
-                        onClick={() => {
-                          localStorage.setItem("applicant-id", item._id);
-                          applicant();
-                        }}
-                        className="bg-black text-white py-1 px-3 rounded-md mt-5 flex justify-items-end cursor-pointer"
+                        <h1 className="text-slate-900 text-3xl">{item.name}</h1>
+                        <h5 className="ml-96 inline text-black">
+                          ${item.money}
+                        </h5>
+                        <h3 className="text-slate-600">⚫{item.job}</h3>
+                        <h3 className="text-slate-600">Describtion</h3>
+                        <h4 className="text-slate-400">{item.describtion}</h4>
+                        <div className="flex justify-between">
+                          <button
+                            onClick={() => {
+                              setData(item._id);
+                              console.log(item._id);
+                              localStorage.setItem("bid-data", item._id);
+                              router.push("/dashboard/bid");
+                            }}
+                            // onClick={() => alert("double click!!!")}
+                            className="bg-black text-white py-1 px-3 rounded-md mt-5 flex justify-items-end cursor-pointer"
+                          >
+                            Bid
+                          </button>
+                          <button
+                            onClick={() => {
+                              localStorage.setItem("applicant-id", item._id);
+                              applicant();
+                            }}
+                            className="bg-black text-white py-1 px-3 rounded-md mt-5 flex justify-items-end cursor-pointer"
+                          >
+                            Applicants
+                          </button>
+                        </div>
+                      </li>
+                    ))}
+                  </div>
+                ) : (
+                  <div>
+                    {bids.map((item) => (
+                      <li
+                        key={item._id}
+                        className="m-10 border px-5 rounded-2xl py-5 "
                       >
-                        Applicants
-                      </button>
-                    </div>
-                  </li>
-                ))}
+                        <h1 className="text-slate-900 text-3xl">{item.name}</h1>
+                        <h5 className="ml-96 inline text-black">
+                          ${item.money}
+                        </h5>
+                        <h3 className="text-slate-600">⚫{item.job}</h3>
+                        <h3 className="text-slate-600">Describtion</h3>
+                        <h4 className="text-slate-400">{item.describtion}</h4>
+                        <div className="flex justify-between">
+                          <button
+                            onClick={() => {
+                              setData(item._id);
+                              console.log(item._id);
+                              localStorage.setItem("bid-data", item._id);
+                              router.push("/dashboard/bid");
+                            }}
+                            // onClick={() => alert("double click!!!")}
+                            className="bg-black text-white py-1 px-3 rounded-md mt-5 flex justify-items-end cursor-pointer"
+                          >
+                            Bid
+                          </button>
+                          <button
+                            onClick={() => {
+                              localStorage.setItem("applicant-id", item._id);
+                              applicant();
+                            }}
+                            className="bg-black text-white py-1 px-3 rounded-md mt-5 flex justify-items-end cursor-pointer"
+                          >
+                            Applicants
+                          </button>
+                        </div>
+                      </li>
+                    ))}
+                  </div>
+                )}
               </ul>
             </div>
 
@@ -301,44 +367,121 @@ const Dashboard = () => {
 
                 {applicants.length > 0 ? (
                   <ul className="mt-10">
+                    <div className="flex justify-between">
+                          
+                          <button
+                          
+                            onClick={() => 
+                              (
+                                handleAccept(),
+                              )
+                            }
+                            className="bg-black px-3 py-1 text-white rounded-md cursor-pointer"
+                          >
+                            Accept
+                          </button>
+                        </div>
                     {applicants.map((applicant, index) => (
                       <li
                         key={index}
                         className="text-black tex-2xl ml-2 font-bold mt-5"
                         style={{
-                    padding: "8px 12px",
-                    borderRadius: 8,
-                    background: "transparent",
-                    border: "1px solid #e5e7eb",
-                  }}
+                          padding: "8px 12px",
+                          borderRadius: 8,
+                          background: "transparent",
+                          border: "1px solid #e5e7eb",
+                        }}
                       >
                         <div className="flex justify-between">
                           {applicant.data.name}{" "}
-                          <button onClick={() => {setAccept(applicant.data.id), handleAccept(), console.log(applicant.data.id), setApplicantData(applicant.data)}} className="bg-black px-3 py-1 text-white rounded-md cursor-pointer">Accept</button>
+                          <button
+                          
+                            onClick={() => {
+                              (setAccept(applicant.data.id),
+                                handleAccept(),
+                                console.log("Applicant id 2  " + applicant.data.id),
+                                setApplicantData(applicant.data));
+                            }}
+                            className="bg-black px-3 py-1 text-white rounded-md cursor-pointer"
+                          >
+                            Accept
+                          </button>
                         </div>
-                        <p className="text-slate-400 font-semibold">{applicant.data.describtion}</p>
+                        <p className="text-slate-400 font-semibold">
+                          {applicant.data.describtion}
+                        </p>
                         {/* {setAccept(applicant.data.id)} */}
-                        {accept === applicant.data.id ? (<div className="flex justify-between">
-                          <input onChange={(e) => setConfirmData(e.target.value)} placeholder="Enter the secrete code" className="border pl-2" /> 
-                          <button onClick={handleConfirmation} className="bg-black text-white px-3 py-1 rounded-md ml-2">confirm</button>
-                        </div>) : ''}
-                        
+                        {accept === applicant.data.id ? (
+                          <div className="mt-5">
+                            <input
+                              onChange={(e) => setConfirmData(e.target.value)}
+                              placeholder="Enter secrete code"
+                              type="text"
+                              className="h-12 w-1/2 flex items-center p-2 border text-black rounded-2xl self-center mx-auto mb-10"
+                            />
+                            <button
+                              disabled={!confirmData}
+                              onClick={handleConfirmation}
+                              className="bg-black px-3 py-1 text-white rounded-md cursor-pointer"
+                            >
+                              Confirm
+                            </button>
+                          </div>
+                        ) : (
+                          " "
+                        )}
                       </li>
                     ))}
                   </ul>
                 ) : (
-                  <p className="font-bold text-2xl mt-10">No applicant for this project yet,be the first applicant 🥳🥳🥳</p>
+                  <p className="font-bold text-2xl mt-10">
+                    No applicant for this project yet,be the first applicant
+                    🥳🥳🥳
+                  </p>
                 )}
 
-                {applicantData && confirm ? (<div className="text-2xl">
-                  <h1 className="text-2xl"><span className="text-black text-2xl font-bold">Applicant Name:  </span>{applicantData.name}</h1>
-                  <h2><span className="text-black text-2xl font-bold">Applicant Email:  </span>{applicantData.email}</h2>
-                  <h2><span className="text-black text-2xl font-bold">Amount demanded:  </span>${applicantData.amount}</h2>
-                  <h2><span className="text-black text-2xl font-bold">Ready in:  </span>{applicantData.days} day(s)</h2>
-                  <a href={`${applicantData.link}`}><span className="text-black text-2xl font-bold">link to his/her website:  </span><span className="underline">{applicantData.link}</span></a>
-                  <h2><span className="text-black text-2xl font-bold">His/her reason for applying for this job:  </span>{applicantData.reason}</h2>
-
-                </div>) : ""}
+                {applicantData && confirm ? (
+                  <div className="text-2xl">
+                    <h1 className="text-2xl">
+                      <span className="text-black text-2xl font-bold">
+                        Applicant Name:{" "}
+                      </span>
+                      {applicantData.name}
+                    </h1>
+                    <h2>
+                      <span className="text-black text-2xl font-bold">
+                        Applicant Email:{" "}
+                      </span>
+                      {applicantData.email}
+                    </h2>
+                    <h2>
+                      <span className="text-black text-2xl font-bold">
+                        Amount demanded:{" "}
+                      </span>
+                      ${applicantData.amount}
+                    </h2>
+                    <h2>
+                      <span className="text-black text-2xl font-bold">
+                        Ready in:{" "}
+                      </span>
+                      {applicantData.days} day(s)
+                    </h2>
+                    <a href={`${applicantData.link}`}>
+                      <span className="text-black text-2xl font-bold">
+                        link to his/her website:{" "}
+                      </span>
+                      <span className="underline">{applicantData.link}</span>
+                    </a>
+                    <h2>
+                      <span className="text-black text-2xl font-bold">
+                        His/her reason for applying for this job:{" "}
+                      </span>
+                      {applicantData.reason}
+                    </h2>
+                  </div>
+                ) : (
+                  ""
+                )}
               </div>
             </div>
           </section>
