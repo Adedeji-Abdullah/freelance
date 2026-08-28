@@ -2,11 +2,17 @@ import mongoose from 'mongoose'
 
 const bidSchema = new mongoose.Schema({
     name: String,
-    job: String,
+    job: {
+        type: String,
+        required: true
+    },
     money: Number,
     describtion: String,
     date: String,
-    secrete: String,
+    secrete: {
+        type: String,
+        required: true
+    },
     option: []
 })
 

@@ -15,6 +15,7 @@ const Dashboard = () => {
   const [confirm, setConfirm] = useState(false);
   const [job, setJob] = useState("");
   const [searchJob, setSearchJob] = useState<bid[]>([]);
+  const [applicantsVerification, setApplicantsVerification] = useState(false)
 
   type bid = {
     _id: string;
@@ -48,6 +49,8 @@ const Dashboard = () => {
   }, []);
 
   const applicant = async () => {
+    try {
+      setApplicantsVerification(true)
     const data = await fetch("http://localhost:5000/applicants");
     const result = await data.json();
     console.log(1);
@@ -62,10 +65,15 @@ const Dashboard = () => {
     console.log(options);
     console.log(options.data);
     setApplicants(options);
+    } catch (error) {
+      console.log(error)
+      setError(error)
+    }
+    
   };
 
   const handleAccept = async () => {
-   await console.log("this is accept  " + accept);
+    await console.log("this is accept  " + accept);
   };
 
   const handleConfirmation = async () => {
@@ -103,7 +111,7 @@ const Dashboard = () => {
 
   return (
     <div
-      className="overflow-visible"
+      className="overflow-y-hidden"
       style={{ padding: 24, background: "#ffffff", minHeight: "100vh" }}
     >
       <input
@@ -221,7 +229,7 @@ const Dashboard = () => {
           </section>
 
           <section
-            className="text-slate-400 "
+            className="text-slate-400"
             style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: 16 }}
           >
             <div
@@ -235,6 +243,7 @@ const Dashboard = () => {
             >
               <h3 style={{ marginTop: 0 }}> activity</h3>
               <ul className="">
+                {error ? error : ""}
                 {searchJob.length > 0 ? (
                   <div>
                     {searchJob.map((item) => (
@@ -265,7 +274,9 @@ const Dashboard = () => {
                           <button
                             onClick={() => {
                               localStorage.setItem("applicant-id", item._id);
+                              
                               applicant();
+                              
                             }}
                             className="bg-black text-white py-1 px-3 rounded-md mt-5 flex justify-items-end cursor-pointer"
                           >
@@ -277,11 +288,15 @@ const Dashboard = () => {
                   </div>
                 ) : (
                   <div>
+                     {job.length > 0 && (
+                      <h1 className="text-red-700 font-bold">No Job type found</h1>
+                    )}
                     {bids.map((item) => (
                       <li
                         key={item._id}
                         className="m-10 border px-5 rounded-2xl py-5 "
                       >
+                       
                         <h1 className="text-slate-900 text-3xl">{item.name}</h1>
                         <h5 className="ml-96 inline text-black">
                           ${item.money}
@@ -337,7 +352,9 @@ const Dashboard = () => {
                     background: "#0b0b0b",
                     color: "#fff",
                     border: "none",
+                    cursor: "pointer",
                   }}
+                  className="hover:bg-slate-100"
                   onClick={() => router.push("/dashboard/post")}
                 >
                   Post a job
@@ -348,6 +365,19 @@ const Dashboard = () => {
                     borderRadius: 8,
                     background: "transparent",
                     border: "1px solid #e5e7eb",
+                    cursor: "pointer",
+                  }}
+                  onClick={() => router.push("/dashboard/feedback")}
+                >
+                  Feedback
+                </button>
+                <button
+                  style={{
+                    padding: "8px 12px",
+                    borderRadius: 8,
+                    background: "transparent",
+                    border: "1px solid #e5e7eb",
+                    cursor: "pointer",
                   }}
                 >
                   View proposals
@@ -365,22 +395,8 @@ const Dashboard = () => {
                           </li>
                       ) */}
 
-                {applicants.length > 0 ? (
+                {applicants.length > 0 && applicantsVerification ? (
                   <ul className="mt-10">
-                    <div className="flex justify-between">
-                          
-                          <button
-                          
-                            onClick={() => 
-                              (
-                                handleAccept(),
-                              )
-                            }
-                            className="bg-black px-3 py-1 text-white rounded-md cursor-pointer"
-                          >
-                            Accept
-                          </button>
-                        </div>
                     {applicants.map((applicant, index) => (
                       <li
                         key={index}
@@ -395,11 +411,12 @@ const Dashboard = () => {
                         <div className="flex justify-between">
                           {applicant.data.name}{" "}
                           <button
-                          
                             onClick={() => {
                               (setAccept(applicant.data.id),
                                 handleAccept(),
-                                console.log("Applicant id 2  " + applicant.data.id),
+                                console.log(
+                                  "Applicant id 2  " + applicant.data.id,
+                                ),
                                 setApplicantData(applicant.data));
                             }}
                             className="bg-black px-3 py-1 text-white rounded-md cursor-pointer"

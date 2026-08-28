@@ -6,35 +6,39 @@ const page = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [describtion, setDescribtion] = useState("");
-  const [reason, setReason] = useState("")
-  const [days, setDays] = useState(0)
-  const [amount, setAmount] = useState(0)
-  const [link, setLink] = useState("")
-  const router = useRouter()
+  const [reason, setReason] = useState("");
+  const [days, setDays] = useState(0);
+  const [amount, setAmount] = useState(0);
+  const [link, setLink] = useState("");
+  const router = useRouter();
 
-  const submit = async (e: React.FocusEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const submit = async () => {
+
     const id = localStorage.getItem("bid-data");
     console.log(id);
-    const data = await fetch("http://localhost:5000/bidding", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        name,
-        email,
-        describtion,
-        id,
-        reason,
-        days,
-        amount,
-        link,
-      }),
-    });
+    try {
+      const data = await fetch("http://localhost:5000/bidding", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name,
+          email,
+          describtion,
+          id,
+          reason,
+          days,
+          amount,
+          link,
+        }),
+      });
 
-    const result = await data.json();
-    router.push("/dashboard")
-    console.log(result);
-    
+      const result = await data.json();
+      
+      console.log(result);
+      router.push("/dashboard");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -124,10 +128,10 @@ const page = () => {
             placeholder="e.g https://example.com"
           />
         </div>
-        
+
         <button
           className="bg-gray-400 hover:bg-gray-300 py-1/2 px-3 mx-auto mt-14 items-center flex rounded-sm cursor-pointer"
-          onClick={submit}
+          onClick={() => {submit(), router.push("/dashboard")}}
         >
           submit
         </button>
