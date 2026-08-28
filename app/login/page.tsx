@@ -42,7 +42,7 @@ const Login = () => {
       
     } catch (err) {
       console.error(err);
-      setError("error logging in")
+      setError("Error logging in")
     } finally {
       setLoading(false);
     }
@@ -67,11 +67,11 @@ const Login = () => {
           <label className="text-xl block" htmlFor="password">Password</label>
           <input className="block border-2 rounded-md h-12 w-full mt-2" type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} />
         </div>
-        <button onClick={submit} className="bg-slate-400 hover:bg-slate-100 mt-4 px-5 flex justify-center py-1 rounded-md text-center mx-auto text-2xl cursor-pointer text-white hover:text-slate-800">{loading? "Logging in..." : "Log in"}</button>
+        <button onClick={submit} className="bg-slate-400 hover:bg-slate-100 mt-4 px-5 flex justify-center py-1 rounded-md text-center mx-auto text-2xl cursor-pointer text-white hover:text-slate-800">{loading ? "Logging in..." : "Log in"}</button>
       </form>
        {error ? error : ""}
       <a href="/register" className="text-white hover:text-gray-300 mt-4 block text-center">
-          Don't have an account? Sign in
+          Don't have an account? <span className="underline">Sign in</span>
         </a>
       </div>
     </div>

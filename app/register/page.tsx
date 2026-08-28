@@ -13,6 +13,7 @@ const page = () => {
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault()
+    console.log("Hi")
     setLoading(true)
     try {
       const resp = await fetch("http://localhost:5000/register", {
@@ -36,7 +37,7 @@ const page = () => {
       console.log("log 3")
     } catch (error) {
       console.log("error signing in")
-      setError("error signing in")
+      setError("Error signing in")
     } finally{
       setLoading(false)
     }
@@ -62,7 +63,7 @@ const page = () => {
         </div>
         </form>
         {error ? error : ""}
-        <button className="bg-slate-400 hover:bg-slate-100 mt-4 px-5 flex justify-center py-1 rounded-md text-center mx-auto text-2xl cursor-pointer text-white hover:text-slate-800">{loading ? "Signing" : "Sign up"}</button>
+        <button onClick={submit} className="bg-slate-400 hover:bg-slate-100 mt-4 px-5 flex justify-center py-1 rounded-md text-center mx-auto text-2xl cursor-pointer text-white hover:text-slate-800">{loading ? "Signing in..." : "Sign up"}</button>
         <a href="/login" className="text-white hover:text-gray-300 mt-4 block text-center">
           Already have an account? Log in
         </a>

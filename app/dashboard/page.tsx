@@ -145,6 +145,9 @@ const Dashboard = () => {
               Overview
             </a>
             <a href="#" style={{ color: "#0b0b0b", textDecoration: "none" }}>
+              Profile
+            </a>
+            <a href="#" style={{ color: "#0b0b0b", textDecoration: "none" }}>
               Projects
             </a>
             <a href="#" style={{ color: "#0b0b0b", textDecoration: "none" }}>
