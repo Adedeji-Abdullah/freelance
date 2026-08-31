@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
 const page = () => {
@@ -8,7 +8,7 @@ const page = () => {
   const [describtion, setDescribtion] = useState("");
   const [reason, setReason] = useState("");
   const [days, setDays] = useState(0);
-  const [amount, setAmount] = useState(0);
+  const [amount, setAmount] = useState<number>(0);
   const [link, setLink] = useState("");
   const router = useRouter();
 
@@ -40,6 +40,23 @@ const page = () => {
       console.log(error);
     }
   };
+  
+
+  useEffect(() => {
+      const resp = async () => {
+        const accessToken = localStorage.getItem("accessToken")
+        const data = await fetch(`http://localhost:5000/authorization/${accessToken}`)
+        if(!accessToken){
+          router.push("/login")
+        }
+        const result = await data.json()
+        console.log(result)
+        if(!result.message){
+          router.push("/login")
+        }
+      }
+      resp()
+    }, [])
 
   return (
     <section className="bg-white min-h-screen">

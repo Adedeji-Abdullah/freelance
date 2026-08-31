@@ -26,9 +26,25 @@ const Dashboard = () => {
   };
 
   const logout = () => {
-    localStorage.removeItem("token");
+    localStorage.removeItem("accessToken");
     router.push("/login");
   };
+
+  useEffect(() => {
+    const resp = async () => {
+      const accessToken = localStorage.getItem("accessToken")
+      const data = await fetch(`http://localhost:5000/authorization/${accessToken}`)
+      if(!accessToken){
+        router.push("/login")
+      }
+      const result = await data.json()
+      console.log(result)
+      if(!result.message){
+        router.push("/login")
+      }
+    }
+    resp()
+  }, [])
 
   useEffect(() => {
     const respo = async () => {

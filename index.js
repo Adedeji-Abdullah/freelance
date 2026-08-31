@@ -6,6 +6,9 @@ import cors from "cors";
 import bcrypt from "bcrypt";
 import freelance from "./model/Auth.js";
 import bids from "./model/bids.js";
+import jwt from "jsonwebtoken"
+import { isReturnStatement } from "typescript";
+import multer from 'multer'
 
 dotenv.config();
 
@@ -19,6 +22,8 @@ app.get("/", (req, res) => {
 
 app.post("/register", async (req, res) => {
   const data = req.body;
+  const {name, email, password} = req.body
+  const payload = { name, email, password }
   try {
     const hashed = await bcrypt.hash(data.password, 10);
     const addUser = await new freelance({
@@ -29,11 +34,29 @@ app.post("/register", async (req, res) => {
     const result = await addUser.save();
     console.log(data);
     console.log("Succesfully");
-    res.json(data);
+    
+    const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN)
+    res.json({name: data.name});
+    console.log(accessToken)
+    // res.json(accessToken)
   } catch (error) {
     console.log("something went wrong>>>>> " + error);
+    res.json(error)
   }
 });
+
+app.post('/authorization/:accessToken', () => {
+   const accessToken = req.params
+   console.log(accessToken)
+   try {
+    const verification = jwt.verify(accessToken, process.env.ACCESS_TOKEN)
+    if (verification) {
+      res.json({message: "successful"})
+    }
+   } catch (err) {
+    res.json({message: "unsuccessful"})
+   }
+})
 
 app.post("/bidding", async (req, res) => {
   const data = req.body;
@@ -79,15 +102,24 @@ app.post('/confirm', async (req, res) => {
 app.post("/login", async (req, res) => {
   try {
     const data = req.body;
-    if (!data.email || data.password) {
+    const { email, password } = req.body
+    const payload = { email, password }
+    if (!data.email || !data.password) {
       res.status(401).json("fill in the empty spaces");
     }
+
     const hashed = await bcrypt.hash(data.password, 10);
     const result = await freelance.findOne({
       email: req.body.email,
-      password: bcrypt.compare(req.password, hashed),
     });
-    res.json(result);
+    console.log(result)
+    const compared = await bcrypt.compare(req.body.password, result.password)
+    console.log(compared)
+    if(compared == false) return
+    const accessToken = jwt.sign(payload, process.env.ACCESS_TOKEN)
+    // res.json(accessToken)
+    console.log(accessToken)
+    res.json({result: result, accessToken: accessToken});
   } catch (error) {
     console.log(error);
     res.status(403).json("Something went wrong");
@@ -116,6 +148,43 @@ app.get("/bids", async (req, res) => {
     console.log("something went wrong " + err);
   }
 });
+
+const storage = multer.diskStorage({
+  destination: function (req, file, cb){
+    cb(null, '/profilePic')
+  }
+},
+{
+  filename: function(req, file, cb){
+    cb(null, file.originalname)
+  }
+}
+)
+
+const upload = multer({ storage })
+
+app.post('/api/profile', upload.single('avatar'), (req, res) => {
+  try {
+    res.json("successfully uploaded")
+  console.log("successfully uploaded")
+  } catch (err) {
+    res.json(401)
+  }
+})
+
+const authorization = (req, res, next) => {
+    const params = req.params
+    if(!params){
+      res.json(401) 
+      return
+    }
+    const verificaton = jwt.verify(params, process.env.ACCESS_TOKEN)
+    if(!verificaton){
+      res.json(403) 
+      return
+    }
+    next()
+}
 
 app.listen(process.env.PORT, async () => {
   try {

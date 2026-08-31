@@ -1,7 +1,7 @@
 "use client";
 import { METHODS } from "http";
-import React, { useState } from "react";
-// import { useRouter } from 'next/navigation'
+import React, { useState, useEffect } from "react";
+import { useRouter } from 'next/navigation'
 
 const page = () => {
   const [name, setName] = useState("");
@@ -13,7 +13,7 @@ const page = () => {
   const [error, setError] = useState("");
   const [secrete, setSecrete] = useState(0)
 
-  // const router = useRouter()
+  const router = useRouter()
 
   const submit = async (e: React.FormEvent) => {
     setLoading(true);
@@ -53,6 +53,22 @@ const page = () => {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+      const resp = async () => {
+        const accessToken = localStorage.getItem("accessToken")
+        const data = await fetch(`http://localhost:5000/authorization/${accessToken}`)
+        if(!accessToken){
+          router.push("/login")
+        }
+        const result = await data.json()
+        console.log(result)
+        if(!result.message){
+          router.push("/login")
+        }
+      }
+      resp()
+    }, [])
 
   return (
     <div className="bg-white text-black min-h-[100vh]">
