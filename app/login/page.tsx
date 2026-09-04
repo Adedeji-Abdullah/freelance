@@ -29,15 +29,14 @@ const Login = () => {
 
       const data = await resp.json();
       console.log(data)
-    //   const token = data?.token || "demo-token";
-    //   localStorage.setItem("token", token);
+      localStorage.setItem("loggedIn-ID", data.result._id)
 
-      // navigate to home after successful login
-      if(data){
-      console.log("Navigated")
-      router.push("/dashboard")
-      console.log("accessToken  " + data.accessToken)
-      localStorage.setItem("accessToken", data.accessToken)
+      // Save token FIRST before navigating
+      if(data && data.accessToken){
+        console.log("accessToken  " + data.accessToken)
+        localStorage.setItem("accessToken", data.accessToken)
+        console.log("Navigated")
+        router.push("/dashboard")
       }else {
         setError("Try Again")
       }

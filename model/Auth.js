@@ -16,6 +16,7 @@ const authSchema = new mongoose.Schema({
     },
     // post: [],
     // application: []
+    profile: [],
 });
 
 export default mongoose.model('freelance', authSchema);
