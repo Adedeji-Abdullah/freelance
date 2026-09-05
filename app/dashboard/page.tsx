@@ -30,6 +30,7 @@ const Dashboard = () => {
 
   const logout = () => {
     localStorage.removeItem("accessToken");
+    localStorage.removeItem("loggedIn-ID");
     router.push("/login");
   };
 
@@ -84,7 +85,13 @@ const Dashboard = () => {
   // useEffect(() => {
     const fetchingProfile = async () => {
       const id = localStorage.getItem("loggedIn-ID")
-    const data = await fetch(`http://localhost:5000/api/getting-profile/${id}`)
+    const data = await fetch(`http://localhost:5000/api/getting-profile/${id}`, {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify({
+        accessToken: localStorage.getItem("accessToken")
+      })
+    })
     setProfileLoading(false)
     const data2 = await data.json()
     const result = JSON.parse(data2)

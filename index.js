@@ -271,6 +271,13 @@ app.post('/api/profile3/:id', upload.single('profilePicture'), async (req, res) 
 
     console.log("Success")
   );
+
+  // const result = await freelance.findByIdAndUpdate(
+  //     id,
+  //     profileData,
+  //     { new: true }
+  //   );
+
   console.log("this is result" + result)
   const info = await freelance.findOne({
     _id: new mongoose.Types.ObjectId(id.id)
@@ -293,9 +300,25 @@ app.post('/api/profile3/:id', upload.single('profilePicture'), async (req, res) 
   }
 });
 
-app.get('/api/getting-profile/:id', async (req, res) => {
+// const authorization = (req, res, next) => {
+//     const params = toString(req.body)
+//     if(!params){
+//       res.json(401) 
+//       return
+//     }
+//     const verification = jwt.verify(params, process.env.ACCESS_TOKEN)
+//     if(!verification){
+//       res.json(403) 
+//       return
+//     }
+//     console.log("this is verification" + JSON.stringify(verification))
+//     next()
+// }
+
+app.post('/api/getting-profile/:id', async (req, res) => {
   const id = req.params.id
   console.log(id)
+
   const data = await freelance.findById(id)
   // console.log("this is data " + data)
   console.log("This is the profile " + JSON.stringify(data.profile[data.profile.length - 1]))
@@ -303,6 +326,11 @@ app.get('/api/getting-profile/:id', async (req, res) => {
   // console.log("this is the one found by id" + data.profile.splice(-1).data)
   res.json(JSON.stringify(data.profile[data.profile.length - 1]))
 })
+
+// const accessing = (req, res, next) => {
+//   const accessToken = req.body.accessToken
+//   const data = jwt.verify()
+// }
 
 
 // Update existing profile
@@ -384,19 +412,6 @@ app.get('/api/profile/:id', async (req, res) => {
   }
 });
 
-const authorization = (req, res, next) => {
-    const params = req.params
-    if(!params){
-      res.json(401) 
-      return
-    }
-    const verificaton = jwt.verify(params, process.env.ACCESS_TOKEN)
-    if(!verificaton){
-      res.json(403) 
-      return
-    }
-    next()
-}
 
 app.listen(process.env.PORT, async () => {
   try {

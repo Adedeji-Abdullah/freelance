@@ -28,7 +28,7 @@ const Login = () => {
       console.log("Log 2")
 
       const data = await resp.json();
-      console.log(data)
+      console.log("this is from login " + data.result._id)
       localStorage.setItem("loggedIn-ID", data.result._id)
 
       // Save token FIRST before navigating

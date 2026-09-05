@@ -110,6 +110,7 @@ const ProfilePage = () => {
       const response = await fetch(`http://localhost:5000/api/profile3/${localStorage.getItem("loggedIn-ID")}`, {
         method: "POST",
         body: formData,
+        
       });
       // const data = await fetch("http://localhost:5000/")
 
