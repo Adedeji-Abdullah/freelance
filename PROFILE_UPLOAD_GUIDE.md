@@ -39,7 +39,7 @@ This guide explains the profile picture upload functionality that has been imple
 
 **Static File Serving**
 - Images are served from `/uploads/` endpoint
-- Access pictures at: `http://localhost:5000/uploads/profilePictures/[filename]`
+- Access pictures at: `https://freelance-1-rw89.onrender.com/uploads/profilePictures/[filename]`
 
 ### 2. **Database Schema Updates** (`model/profile.js`)
 
@@ -140,7 +140,7 @@ formData.append("group", "Frontend developer");
 formData.append("bio", "Experienced frontend developer...");
 formData.append("profilePicture", fileObject);
 
-const response = await fetch("http://localhost:5000/api/profile", {
+const response = await fetch("https://freelance-1-rw89.onrender.com/api/profile", {
   method: "POST",
   body: formData  // Note: Don't set Content-Type header with FormData
 });
@@ -148,7 +148,7 @@ const response = await fetch("http://localhost:5000/api/profile", {
 
 ### Retrieve Profile
 ```javascript
-const response = await fetch("http://localhost:5000/api/profile/[profileId]");
+const response = await fetch("https://freelance-1-rw89.onrender.com/api/profile/[profileId]");
 const data = await response.json();
 // Access image: data.data.profilePictureUrl
 ```
@@ -161,7 +161,7 @@ formData.append("lastname", "Doe");
 formData.append("bio", "Updated bio...");
 formData.append("profilePicture", newFileObject); // Optional
 
-const response = await fetch(`http://localhost:5000/api/profile/[profileId]`, {
+const response = await fetch(`https://freelance-1-rw89.onrender.com/api/profile/[profileId]`, {
   method: "PUT",
   body: formData
 });
@@ -218,7 +218,7 @@ const response = await fetch(`http://localhost:5000/api/profile/[profileId]`, {
 **Solution**:
 1. Check if `profilePictureUrl` is in database
 2. Verify static file serving is enabled: `app.use('/uploads', express.static(...))`
-3. Access images via: `http://localhost:5000/uploads/profilePictures/[filename]`
+3. Access images via: `https://freelance-1-rw89.onrender.com/uploads/profilePictures/[filename]`
 
 ### Issue: File too large error
 **Solution**: Ensure image is less than 5MB. Compress image if needed.
@@ -228,7 +228,7 @@ const response = await fetch(`http://localhost:5000/api/profile/[profileId]`, {
 1. **Add Profile Picture Display**: Show uploaded image in profile view
    ```typescript
    {profileData.profilePictureUrl && (
-     <img src={`http://localhost:5000${profileData.profilePictureUrl}`} />
+     <img src={`https://freelance-1-rw89.onrender.com${profileData.profilePictureUrl}`} />
    )}
    ```
 
@@ -281,7 +281,7 @@ npm install
 5. **Submit**: Click "Create Profile"
 6. **Verify**: Check success message and redirect to dashboard
 7. **Check database**: Verify profile document in MongoDB
-8. **Access image**: `http://localhost:5000/uploads/profilePictures/[filename]`
+8. **Access image**: `https://freelance-1-rw89.onrender.com/uploads/profilePictures/[filename]`
 
 ## File Structure
 ```

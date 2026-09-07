@@ -17,7 +17,7 @@ const page = () => {
     console.log("Hi")
     setLoading(true)
     try {
-      const resp = await fetch("http://localhost:5000/register", {
+      const resp = await fetch("https://freelance-1-rw89.onrender.com/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

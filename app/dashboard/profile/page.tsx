@@ -26,7 +26,7 @@ const ProfilePage = () => {
       }
       try {
         const data = await fetch(
-          `http://localhost:5000/authorization/${accessToken}`
+          `https://freelance-1-rw89.onrender.com/authorization/${accessToken}`
         );
         const result = await data.json();
         if (result.message) {
@@ -74,7 +74,7 @@ const ProfilePage = () => {
   useEffect( () => {
     const resp = async() => {
       const user = localStorage.getItem("loggedIn-ID")
-    const response = await fetch(`http://localhost:5000/api/profile/${user}`)
+    const response = await fetch(`https://freelance-1-rw89.onrender.com/api/profile/${user}`)
     console.log(response)
     }
     resp()
@@ -107,11 +107,11 @@ const ProfilePage = () => {
       formData.append("bio", bio);
       formData.append("profilePicture", profilePicture);
       
-      const response = await fetch(`http://localhost:5000/api/profile3/${localStorage.getItem("loggedIn-ID")}`, {
+      const response = await fetch(`https://freelance-1-rw89.onrender.com/api/profile3/${localStorage.getItem("loggedIn-ID")}`, {
         method: "POST",
         body: formData,
       });
-      // const data = await fetch("http://localhost:5000/")
+      // const data = await fetch("https://freelance-1-rw89.onrender.com/")
 console.log(response)
       const result = await response.json();
       console.log(result)

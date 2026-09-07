@@ -23,7 +23,7 @@ const FeedbackPage = () => {
       }
       try {
         const data = await fetch(
-          `http://localhost:5000/authorization/${accessToken}`
+          `https://freelance-1-rw89.onrender.com/authorization/${accessToken}`
         );
         const result = await data.json();
         if (result.message) {

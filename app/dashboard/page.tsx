@@ -45,7 +45,7 @@ const Dashboard = () => {
 
       try {
         const data = await fetch(
-          `http://localhost:5000/authorization/${accessToken}`
+          `https://freelance-1-rw89.onrender.com/authorization/${accessToken}`
         );
         
         // Check if response is OK
@@ -85,7 +85,7 @@ const Dashboard = () => {
   // useEffect(() => {
     const fetchingProfile = async () => {
       const id = localStorage.getItem("loggedIn-ID")
-    const data = await fetch(`http://localhost:5000/api/getting-profile/${id}`, {
+    const data = await fetch(`https://freelance-1-rw89.onrender.com/api/getting-profile/${id}`, {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({
@@ -105,7 +105,7 @@ const Dashboard = () => {
   useEffect(() => {
     const respo = async () => {
       try {
-        const data = await fetch("http://localhost:5000/bids");
+        const data = await fetch("https://freelance-1-rw89.onrender.com/bids");
         const result = await data.json();
         setBids(result);
       } catch (error: any) {
@@ -118,7 +118,7 @@ const Dashboard = () => {
   const applicant = async () => {
     try {
       setApplicantsVerification(true);
-      const data = await fetch("http://localhost:5000/applicants");
+      const data = await fetch("https://freelance-1-rw89.onrender.com/applicants");
       const result = await data.json();
       const filtered = result.filter(
         (item: any) => item._id === localStorage.getItem("applicant-id")
@@ -143,7 +143,7 @@ const Dashboard = () => {
       }
 
       const response = await fetch(
-        `http://localhost:5000/api/profile/${profileId}`
+        `https://freelance-1-rw89.onrender.com/api/profile/${profileId}`
       );
       const result = await response.json();
 
@@ -163,7 +163,7 @@ const Dashboard = () => {
   };
 
   const handleConfirmation = async () => {
-    const data = await fetch("http://localhost:5000/confirm", {
+    const data = await fetch("https://freelance-1-rw89.onrender.com/confirm", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -753,7 +753,7 @@ const Dashboard = () => {
                   <div style={{ textAlign: "center", display: "flex", justifyContent: "center" }}>
                     {profileData.profilePictureUrl ? (
                       <img
-                        src={`http://localhost:5000${profileData.profilePictureUrl}`}
+                        src={`https://freelance-1-rw89.onrender.com${profileData.profilePictureUrl}`}
                         alt="Profile"
                         style={{
                           width: 150,

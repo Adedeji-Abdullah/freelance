@@ -25,7 +25,7 @@ const BidPage = () => {
       }
       try {
         const data = await fetch(
-          `http://localhost:5000/authorization/${accessToken}`
+          `https://freelance-1-rw89.onrender.com/authorization/${accessToken}`
         );
         const result = await data.json();
         if (result.message) {
@@ -55,7 +55,7 @@ const BidPage = () => {
 
     try {
       const id = localStorage.getItem("bid-data");
-      const data = await fetch("http://localhost:5000/bidding", {
+      const data = await fetch("https://freelance-1-rw89.onrender.com/bidding", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

@@ -18,7 +18,7 @@ const Login = () => {
     try {
       const form = e.target as HTMLFormElement;
       console.log("Log 1")
-      const resp = await fetch("http://localhost:5000/login", {
+      const resp = await fetch("https://freelance-1-rw89.onrender.com/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

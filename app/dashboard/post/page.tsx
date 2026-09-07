@@ -23,7 +23,7 @@ const PostPage = () => {
       }
       try {
         const data = await fetch(
-          `http://localhost:5000/authorization/${accessToken}`
+          `https://freelance-1-rw89.onrender.com/authorization/${accessToken}`
         );
         const result = await data.json();
         if (result.message) {
@@ -49,7 +49,7 @@ const PostPage = () => {
     try {
       const profileId = localStorage.getItem("profileId");
       
-      const resp = await fetch("http://localhost:5000/post", {
+      const resp = await fetch("https://freelance-1-rw89.onrender.com/post", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
