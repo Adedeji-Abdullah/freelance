@@ -24,7 +24,7 @@ const uploadDir = path.join(__dirname, 'public', 'uploads', 'profilePictures');
 
 const app = express();
 app.use(express.json());
-app.use(cors({ origin: 'http://localhost:3000' })); 
+app.use(cors({ origin: ['http://localhost:3000', 'https://freelance-plum.vercel.app'] })); 
 app.use('/uploads', express.static(path.join(__dirname, 'public', 'uploads')));
 
 app.get("/", (req, res) => {
