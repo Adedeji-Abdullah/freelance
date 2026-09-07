@@ -9,6 +9,7 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("")
   const [error, setError] = useState("")
+  const [id, setId] = useState("")
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,6 +29,7 @@ const Login = () => {
       console.log("Log 2")
 
       const data = await resp.json();
+      setId(data.result._id)
       console.log("this is from login " + data.result._id)
       localStorage.setItem("loggedIn-ID", data.result._id)
 

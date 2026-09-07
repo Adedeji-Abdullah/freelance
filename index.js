@@ -15,6 +15,7 @@ import fs from 'fs';
 import { fileURLToPath } from 'url';
 
 
+
 dotenv.config();
 
 const __filename = fileURLToPath(import.meta.url);
@@ -23,7 +24,7 @@ const uploadDir = path.join(__dirname, 'public', 'uploads', 'profilePictures');
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(cors({ origin: 'http://localhost:3000' })); 
 app.use('/uploads', express.static(path.join(__dirname, 'public', 'uploads')));
 
 app.get("/", (req, res) => {
@@ -239,7 +240,7 @@ app.post('/api/profile3/:id', upload.single('profilePicture'), async (req, res) 
   try {
     const data = req.body;
     const id = req.params
-    
+    console.log(req.file)
     // Build profile object
     // const filter = await freelance.findById(id)
     // console.log(filter)
@@ -263,14 +264,13 @@ app.post('/api/profile3/:id', upload.single('profilePicture'), async (req, res) 
     console.log("ID", id)
     console.log("TYPEOF ID:", typeof id)
 
-    const result = await freelance.updateOne(
+    const result = await freelance.findOneAndUpdate(
     {
       _id: new mongoose.Types.ObjectId(id.id)
     },
-    { $push: { profile: {data} } },
-
-    console.log("Success")
-  );
+    { $push: { profile: profileData },
+    
+   }, {new: true});
 
   // const result = await freelance.findByIdAndUpdate(
   //     id,
@@ -285,10 +285,11 @@ app.post('/api/profile3/:id', upload.single('profilePicture'), async (req, res) 
     // const result = await newProfile.save();
     
     console.log('Profile created:', result);
+    console.log(info)
     res.json({
       success: true,
       message: 'Profile created successfully',
-      data: info
+      data: result
     });
   } catch (err) {
     console.error('Error creating profile:', err);
