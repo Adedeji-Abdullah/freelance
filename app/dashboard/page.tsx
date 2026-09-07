@@ -95,9 +95,9 @@ const Dashboard = () => {
     setProfileLoading(false)
     const data2 = await data.json()
     const result = JSON.parse(data2)
-    console.log("result" + result)
+    console.log("result " + result)
     setProfileData(result)
-    console.log(result.data.lastname)
+    console.log(result.lastname)
   }
   // fetchingProfile()
   // }, [])
@@ -792,7 +792,7 @@ const Dashboard = () => {
                           fontWeight: 700,
                         }}
                       >
-                        {profileData.data.firstname} {profileData.data.lastname}
+                        {profileData.firstname} {profileData.lastname}
                       </h1>
                       <p
                         style={{
@@ -801,7 +801,7 @@ const Dashboard = () => {
                           fontSize: 14,
                         }}
                       >
-                        {profileData.data.group}
+                        {profileData.group}
                       </p>
                     </div>
 
@@ -825,7 +825,7 @@ const Dashboard = () => {
                           Email
                         </div>
                         <div style={{ fontSize: 14, fontWeight: 500, color: "#1f2937" }}>
-                          {profileData.data.email}
+                          {profileData.email}
                         </div>
                       </div>
 
@@ -841,7 +841,7 @@ const Dashboard = () => {
                           Category
                         </div>
                         <div style={{ fontSize: 14, fontWeight: 500, color: "#1f2937" }}>
-                          {profileData.data.category}
+                          {profileData.category}
                         </div>
                       </div>
                     </div>
@@ -865,7 +865,7 @@ const Dashboard = () => {
                           lineHeight: "1.6",
                         }}
                       >
-                        {profileData.data.bio}
+                        {profileData.bio}
                       </p>
                     </div>
 
@@ -909,7 +909,7 @@ const Dashboard = () => {
                       Profile Created
                     </div>
                     <div style={{ fontSize: 14, fontWeight: 500 }}>
-                      {new Date(profileData.data.createdAt).toLocaleDateString()}
+                      {new Date(profileData.createdAt).toLocaleDateString()}
                     </div>
                   </div>
 
@@ -925,7 +925,7 @@ const Dashboard = () => {
                       Last Updated
                     </div>
                     <div style={{ fontSize: 14, fontWeight: 500 }}>
-                      {new Date(profileData.data.updatedAt).toLocaleDateString()}
+                      {new Date(profileData.updatedAt).toLocaleDateString()}
                     </div>
                   </div>
                 </div>

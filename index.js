@@ -250,7 +250,8 @@ app.post('/api/profile3/:id', upload.single('profilePicture'), async (req, res) 
       email: data.email,
       category: data.category,
       group: data.group,
-      bio: data.bio
+      bio: data.bio,
+      updatedAt: new Date()
     };
 
     // If file was uploaded, add it to profile data
