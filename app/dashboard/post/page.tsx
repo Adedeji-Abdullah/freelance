@@ -12,6 +12,7 @@ const PostPage = () => {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
   const [isAuthorized, setIsAuthorized] = useState<boolean | null>(null);
+  const [secrete, setSecrete] = useState(0);
   const router = useRouter();
 
   useEffect(() => {
@@ -58,7 +59,7 @@ const PostPage = () => {
           money,
           describtion: description,
           days,
-          secrete: 0,
+          secrete,
           profileId: profileId || undefined
         }),
       });
@@ -306,6 +307,37 @@ const PostPage = () => {
                 }}
               >
                 Timeline (Days) *
+              </label>
+              <input
+                required
+                onChange={(e) => setDays(e.target.value)}
+                value={days}
+                type="number"
+                placeholder="e.g., 7"
+                min="1"
+                style={{
+                  width: "100%",
+                  padding: "10px 12px",
+                  border: "1px solid #e2e8f0",
+                  borderRadius: 6,
+                  fontSize: 14,
+                  fontFamily: "inherit",
+                  boxSizing: "border-box",
+                }}
+              />
+            </div>
+
+            <div style={{ marginBottom: 24 }}>
+              <label
+                style={{
+                  display: "block",
+                  fontSize: 14,
+                  fontWeight: 600,
+                  marginBottom: 8,
+                  color: "#0f172a",
+                }}
+              >
+                Your secrete code *
               </label>
               <input
                 required
