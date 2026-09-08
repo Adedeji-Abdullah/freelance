@@ -341,8 +341,8 @@ const PostPage = () => {
               </label>
               <input
                 required
-                onChange={(e) => setDays(e.target.value)}
-                value={days}
+                onChange={(e) => setSecrete(Number(e.target.value))}
+                value={secrete}
                 type="number"
                 placeholder="e.g., 7"
                 min="1"
